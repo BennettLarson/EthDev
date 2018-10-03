@@ -1,0 +1,98 @@
+Structs:
+    -custom data type. Has an identifier/name and then attributes
+	struct Person {
+	  uint age;
+	  string name;
+	}
+
+Function signature ex:
+    function _functionName(string _param1, uint _param2) private {}
+    function function2Name(uint _param) {}
+    function _function3Name(uint _a, uint _b) private pure returns (uint) { return _a*_b);}
+
+Function Types:
+    -public(this is default): means anyone can call the contract
+    -private: only other functions within the contract can call it 
+	-start private function names with an underscore
+
+Function Modifiers: 
+    -view: A view function doesnt modify any data, doesnt change any state variable on the blockchain (think getters) 
+    -pure: A pure function doesnt modify any data or even read/view any data on the blockchain. I.E. a math function of some sort
+
+Typecasting: 
+    -Changing a variable to a particular type    
+	uint8 a = 5;
+	uint b = 6;
+	uint8 c = a*b; <-- ERROR not same type
+	uint8 c = a*uint8(b); <-- Gucci
+
+Events: 
+    -Communicate from contract to front end that something has occurred.
+	event IntegersAdded(uint x, uint y, uint result)
+
+Mapping:
+    -Its a dictionary or a hash table, just key value pairs
+	mapping (key => value)
+	mapping (address => uint) public accountBalance
+
+Global Variables:
+    -Certain variables available to all functions
+	-msg.sender: the address of the caller of the function (person/smart contract)
+
+Condition checking: 
+    -There are traditional if/else statements
+    -Also 'require' statements. Which are conditonals that when not met, throw an error
+	require(keccak256(_name) == keccak256("Bennett))
+	    keccak256 is just a hash function
+
+Inheritance:
+   -Allows one contract access to all public functions in another.
+	contract Dog is Animal {}
+
+Import:
+   -split code into different files and allow access to public functions and attributes.
+	import "./fileA";
+
+Storage vs Memory:
+    -storage: variables stored on the blockchain
+    -memory: temporary variables, erased between external function calls to your contract
+    -usually taken automatically
+	-state variables/variables declared outside of functions are storage
+	-variables declared in functions are memory/temporary
+	-however when dealing with structs/arrays in functions, you need to explicitly use these keywords
+		Sandwich[] sandwiches;
+		function functionA(uint _index) public {
+		    Sandwich mySandwich = sandwiches[_index]; <-- will get a warning
+		    Sandwich storage mySandwich = sandwiches[_index]; <-- mySandwich now a pointer to sandwiches[_index]
+	            mySandwich.status = "eaten"; <-- will permanently change sandwiches[_index] on blockchain
+		    Sandwich memory anotherSandwich = sandwiches[_index+1] <-- a copy of the data at that location.
+		    anotherSandwich.status = "eaten" <-- wont write to blockchain
+		    sandwiches[_index+1] = anotherSandwich <-- will copy changes into blockchain
+
+	  
+More Function Modifiers:
+    -Like functions, but cant be called.
+    -Added to function signatures, executed before the function. Often require statements
+    -can take parameters
+    -the _; indicates that the modifier is done and the function code should start executing
+
+	modififer onlyOnwer() {
+	  require(msg.sender == owner);
+	  _;
+	}
+
+
+	contract MyContract is Ownable {
+	  function foo() external onlyOnwer {
+	    // execute code
+	  }
+	}
+
+    -can have parameters 
+
+	modifier olderThan(uint _age, uint _userId) {
+	    require(age[_userId] >= _age);
+	    _;
+	}
+
+
