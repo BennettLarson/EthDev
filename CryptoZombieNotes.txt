@@ -1,3 +1,6 @@
+/ Thank you for help, Bennett!
+
+
 Structs:
     -custom data type. Has an identifier/name and then attributes
 	struct Person {
